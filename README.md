@@ -1,5 +1,11 @@
 # three-project
 
+## 起動方法
+```
+npm run dev
+```
+
+
 ## Three.js とは
 
 - 3D = Three Demention の Three と思われる。

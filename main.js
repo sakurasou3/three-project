@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 // global変数
-let scene, camera, renderer, pointLight, controls;
+let scene, camera, renderer, pointLight, controls, ball2Mesh;
 
 const init = () => {
   // scene, camera, rendererの作成
@@ -41,6 +41,16 @@ const init = () => {
   let ballMesh = new THREE.Mesh(ballGeometry, ballMaterial);
   scene.add(ballMesh);
 
+  let ball2Geometry = new THREE.SphereGeometry(
+    10 // radius: 半径
+  );
+  let ball2Material = new THREE.MeshNormalMaterial();
+  // メッシュ化
+  // ジオメトリとマテリアルを組み合わせたもの＝オブジェクトやポリゴンと捉えて良さそう
+  ball2Mesh = new THREE.Mesh(ball2Geometry, ball2Material);
+  ball2Mesh.position.set(-200, -200, -200);
+  scene.add(ball2Mesh);
+
   // 平行光源を追加する
   let directionalLight = new THREE.DirectionalLight(0xffffff, 2);
   directionalLight.position.set(1, 1, 1);
@@ -55,7 +65,7 @@ const init = () => {
 
   // ポイント光源の場所を特定する
   let pointLightHelper = new THREE.PointLightHelper(pointLight, 30);
-  scene.add(pointLightHelper);
+  // scene.add(pointLightHelper);
 
   // マウス操作
   controls = new OrbitControls(camera, renderer.domElement);
@@ -67,12 +77,19 @@ const init = () => {
 };
 
 const animate = () => {
+  const now = Date.now();
   // ポイント光源を球体の周りを巡回させる
   pointLight.position.set(
-    200 * Math.cos(Date.now() / 500),
-    200 * Math.sin(Date.now() / 1000),
-    200 * Math.sin(Date.now() / 500)
+    200 * Math.cos(now / 500),
+    200 * Math.sin(now / 1000),
+    200 * Math.sin(now / 500)
   );
+  ball2Mesh.position.set(
+    200 * Math.cos(now / 500),
+    200 * Math.sin(now / 1000),
+    200 * Math.sin(now / 500)
+  );
+
   requestAnimationFrame(animate);
   // レンダリング
   renderer.render(scene, camera);
